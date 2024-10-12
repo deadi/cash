@@ -90,7 +90,7 @@ def summarize_amounts(file_path, keys_to_search):
 
 def main():
     configs = [
-        {"csv": "/home/adi/bo/cash/data/2024-pk-nici.csv", "json": "/home/adi/bo/cash/config/nici.json"}
+        {"csv": "/home/adi/cash/data/2024-pk-nici.csv", "json": "/home/adi/cash/config/nici.json"}
     ]
 
     for config in configs:
