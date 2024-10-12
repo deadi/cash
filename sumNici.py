@@ -3,7 +3,7 @@ import json
 from top_amounts_nici import get_top_no_key_lines  # Import the function from the other script
 import codecs  # For UTF-8 BOM handling
 
-#output_csv_path = "/home/adi/windows/data/shared/CashCsv/2024nici.csv"
+#output_csv_path = "/home/adi/docker/windows/data/shared/CashCsv/2024nici.csv"
 output_csv_path = "/home/adi/cash/output/2024nici.csv" # Testhilfe
 
 # Nicole hat 3 Spalten mit Description. row[12-14]
