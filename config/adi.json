@@ -1,0 +1,29 @@
+{
+    "keys_to_search": {
+        "AN": ["PAT-BVG", "R+R Sonic", "Stiftung f. d.Photo", "Photographie"],
+        "SE": ["SUISA, Urheber,", "Steinwerkstatt Roland R", "Roland Rüegg", "Musigb", "KulturSounds"],
+        "Sparen": ["Adrian Eberhard Mitglieder Sparkonto"],
+        "Vorsorge": ["Adrian Eberhard Vorsorgekonto 3a"],
+        "Steuern": ["Finanzen der Stadt St. Gallen", "Sozialversicherungsanstalt", "Gemeinde Wattwil"],
+        "Bargeld": ["Bancomat"],
+        "Wohnen": ["Urban Kupferschmidt / Ursula Kupferschmidt"],
+        "Wohnen-Energie": ["ST.GALLER STADTWERKE", "St.Galler Stadtwerke"],
+        "Wohnen-Hardware": ["991, St. Gallen", "IKEA AG", "OBI", "SITSLEEP"],
+        "Nici<Adi": ["Nicole Th"],
+        "Viseca": ["Viseca"],
+        "Krankenkasse": ["CSS"],
+        "Krankheit": ["Medbase AG", "Fielmann", "FIELMANN", "Heinz Käser jun."],
+        "Versicherung": ["Schweizerische Mobiliar"],        
+        "Auto": ["Garage Manser AG", "Strassenverkehrs- und", "Kantonspolizei"],
+        "Transport": ["CembraPay AG", "Migrol Service", "Agrola", "SBB Contact Center", "Shell", "BP Garage", "OSTERWALDER", "AVIA"],
+        "Essen": ["Coop", "Aldi", "Lidl", "Migros", "Manor", "Metzgerei", "Konditorei"],
+        "Restaurant": ["Pizzeria", "Restaurant", "RESTAURANT", "Gasthaus", "GASTHAUS", "Trattoria", "Bistro", "Kuhn Back & Gastro", "Netts"],        
+        "TWINT": ["TWINT"],
+        "Entertainment": ["Sport", "Cinema", "PKZ", "H & M", "Harris", "Landi", "kiosk", "Heilbad"],
+        "Gebühren": ["Jahresgebühr", "SERAFE AG"],
+        "DIV": ["Müller Handels AG"],
+        "DIV2": [],
+        "Lia": [],
+        "Pius & Loni": ["Gutschrift Pius und/oder Loni Eberhard"]
+    }
+}
