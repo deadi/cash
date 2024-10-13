@@ -83,8 +83,18 @@ def summarize_amounts(file_path, keys_to_search):
                 amounts["no_key"] += amount
 
             # Debug row processing
-            debug_row_processing(row, description, amount, key_found, group, description if description else "No description matched")
+            #debug_row_processing(row, description, amount, key_found, group, description if description else "No description matched")
 
+    # Print the group totals in the order they appear in keys_to_search
+    print("\nGroup Totals:")
+    for group in keys_to_search:
+        print(f"{group}: {group_totals[group]:.2f}")
+    
+    # Print the total amount for 'no key'
+    print(f"No Key: {amounts['no_key']:.2f}")
+        
+    # Print a clearer separation between file outputs
+    print("\n---------------------------------------------\n")
     return amounts, group_totals  # Return the amounts and group_totals
 
 
