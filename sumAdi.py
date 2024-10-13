@@ -2,8 +2,8 @@ import csv
 import json
 from top_amounts import get_top_no_key_lines  # Import the function from the other script
 
-#output_csv_path = "/home/adi/docker/windows/data/shared/CashCsv/2023adi.csv"
-output_csv_path = "/home/adi/cash/output/2023adi.csv" # Testhilfe
+#output_csv_path = "/home/adi/docker/windows/data/shared/CashCsv/2024adi.csv"
+output_csv_path = "/home/adi/cash/output/2024adi.csv" # Testhilfe
 
 
 def debug_row_processing(row, description, amount, key_found, group, desc):
@@ -65,7 +65,7 @@ def summarize_amounts(file_path, keys_to_search):
 
 def main():
     configs = [
-        {"csv": "/home/adi/cash/data/2023-mpk-adi.csv", "json": "/home/adi/cash/config/adi.json"},
+        {"csv": "/home/adi/cash/data/2024-mpk-adi.csv", "json": "/home/adi/cash/config/adi.json"},
     ]
 
     for config in configs:

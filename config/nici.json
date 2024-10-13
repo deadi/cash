@@ -22,8 +22,8 @@
         "Entertainment": ["ZALANDO PAYMENTS GMBH", "Globus", "C & A", "H & M", "SumUp", "Ochsner Sport", "Vero Moda", "Lavka", "KLARNA BANK AB", "Fizzen", "Kosmetikstudio", "Sostrene Grene", "ONLY St. Gallen", "ITX Retail Suisse Sàrl"],
         "Gebühren": ["Jahresgebühr", "SERAFE AG", "FedEx Express Swiss Post"],
         "DIV": ["FILAB", "MRS.SPORTY", "BABY", "Blumen", "BLUMEN", "Müller Handels AG", "Papeterie zum Schiff AG"],
-        "Telefon": ["SALT MOB"],
+        "DIV2": ["SALT MOB"],
         "Lia": [],
-        "Rahel Thürlemann": ["RAHEL THUERLEMANN HEIERLI"]
+        "Family": ["RAHEL THUERLEMANN HEIERLI"]
     }
 }
