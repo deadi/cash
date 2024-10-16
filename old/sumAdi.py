@@ -1,6 +1,6 @@
 import csv
 import json
-from top_amounts import get_top_no_key_lines  # Import the function from the other script
+from old.top_amounts import get_top_no_key_lines  # Import the function from the other script
 
 #output_csv_path = "/home/adi/docker/windows/data/shared/CashCsv/2024adi.csv"
 output_csv_path = "/home/adi/cash/output/2024adi.csv" # Testhilfe
