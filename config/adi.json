@@ -1,8 +1,5 @@
-//
-// usage: python /home/adi/cash/src/main.py --config /home/adi/cash/config/adi.json --output /home/adi/cash/output/2024adi.csv
-//
 {
-    "csv": "/home/adi/cash/data/2024adi.csv",
+    "csv": "/home/adi/cash/data/2024-mpk-adi.csv",
     "keys_to_search": {
         "AN": ["PAT-BVG", "R+R Sonic", "Stiftung f. d.Photo", "Photographie"],
         "SE": ["SUISA, Urheber,", "Steinwerkstatt Roland R", "Roland Rüegg", "Musigb", "KulturSounds"],
