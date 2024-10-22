@@ -2,11 +2,14 @@ import csv
 import argparse
 from config_loader import load_config
 from data_processing import summarize_amounts_adi, get_top_no_key_lines_adi
+import os
 
-import csv
-import argparse
-from config_loader import load_config
-from data_processing import summarize_amounts_adi, get_top_no_key_lines_adi
+# Print the current working directory (which should be your workspace folder)
+print("Current Working Directory:", os.getcwd())
+
+# Alternatively, use the workspace folder from the environment variable
+workspace_folder = os.getenv('VSCODE_WORKSPACE_FOLDER')
+print("Workspace Folder Path:", workspace_folder)
 
 # Argument parser setup
 def parse_arguments():
