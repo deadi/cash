@@ -1,4 +1,5 @@
 # Ignore the virtual environment directory
+config/
 venvs/
 data/
 output/
