@@ -1,8 +1,13 @@
 import csv
 import argparse
-from config_loader import load_config
-from data_processing import summarize_amounts_adi, get_top_no_key_lines_adi
 import os
+from config_loader import load_config
+from data_processing import (
+    summarize_amounts_adi,
+    summarize_amounts_nici,
+    get_top_no_key_lines_adi,
+    get_top_no_key_lines_nici
+)
 
 # Print the current working directory (which should be your workspace folder)
 print("Current Working Directory:", os.getcwd())
@@ -31,17 +36,26 @@ def main():
         
         # Extract the CSV file path and search keys from the loaded config
         csv_file_path = config_data["csv"]
-        keys_to_search = config_data["keys_to_search"]  
+        keys_to_search = config_data["keys_to_search"]
         
         # Get the output path from the command-line arguments
         output_csv_path = args.output
 
-        # Summarize amounts for the corresponding CSV file and capture the results
-        print(f"Processing {csv_file_path} with {args.config}")
-        amounts, group_totals = summarize_amounts_adi(csv_file_path, keys_to_search)
-        
-        # Get the top no-key lines and display them (excluding the first element of each row)
-        top_lines = get_top_no_key_lines_adi(csv_file_path, keys_to_search, top_n=10)
+        # Determine which functions to use based on the config filename
+        if 'adi.json' in args.config:
+            # Process with Adi functions
+            print(f"Processing {csv_file_path} with {args.config} (using Adi functions)")
+            amounts, group_totals = summarize_amounts_adi(csv_file_path, keys_to_search)
+            top_lines = get_top_no_key_lines_adi(csv_file_path, keys_to_search, top_n=10)
+        elif 'nici.json' in args.config:
+            # Process with Nici functions
+            print(f"Processing {csv_file_path} with {args.config} (using Nici functions)")
+            amounts, group_totals = summarize_amounts_nici(csv_file_path, keys_to_search)
+            top_lines = get_top_no_key_lines_nici(csv_file_path, keys_to_search, top_n=10)
+        else:
+            raise ValueError("Unknown config type. Please provide either adi.json or nici.json.")
+
+        # Display top lines with no key
         print(f"Top {len(top_lines)} 'no key' lines for {csv_file_path}:")
         for line in top_lines:
             truncated_description = line[2][:50] + ('...' if len(line[2]) > 50 else '')
