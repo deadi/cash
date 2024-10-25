@@ -16,15 +16,15 @@
         "Krankheit": ["Medbase AG", "Fielmann", "FIELMANN", "Heinz Käser jun.", "Dr. med. Rainer Fischbacher"],
         "Versicherung": ["Schweizerische Mobiliar"],        
         "Auto": ["Garage Manser AG", "Strassenverkehrs- und", "Kantonspolizei"],
-        "Transport": ["CembraPay AG", "Migrol Service", "Agrola", "SBB Contact Center", "Shell", "BP Garage", "OSTERWALDER", "AVIA", "Avia Ikarusstr.2"],
-        "Essen": ["Coop", "Aldi", "Lidl", "Migros", "Manor", "Metzgerei", "Konditorei"],
-        "Restaurant": ["Pizzeria", "Restaurant", "RESTAURANT", "Gasthaus", "GASTHAUS", "Trattoria", "Bistro", "Kuhn Back & Gastro", "Netts", "Stickerei"],        
+        "Transport": ["CembraPay AG", "Migrol Service", "Agrola", "SBB Contact Center", "Shell", "BP Garage", "BP Tankstelle", "OSTERWALDER", "AVIA", "Avia Ikarusstr.2", "stazione"],
+        "Essen": ["Denner", "Coop", "Aldi", "Lidl", "Migros", "Manor", "Metzgerei", "Konditorei", "Scheiwiller Schlossm", "Marché"],
+        "Restaurant": ["Café", "Pizzeria", "Restaurant", "RESTAURANT", "Gasthaus", "GASTHAUS", "Trattoria", "Bistro", "Kuhn Back & Gastro", "Netts", "Stickerei", "McDonalds", "SUBWAY", "Schwyter B.", "Buffet"],        
         "TWINT": ["TWINT"],
-        "Entertainment": ["Sport", "Cinema", "PKZ", "H & M", "Harris", "Landi", "kiosk", "Heilbad"],
-        "Gebühren": ["Jahresgebühr", "SERAFE AG", "FedEx Express Swiss Post"],
-        "DIV": ["Müller Handels AG"],
+        "Entertainment": ["Sport", "Cinema", "PKZ", "H & M", "Harris", "Landi", "kiosk", "avec", "Heilbad", "Analog Bar SG", "OPENAIR", "Stars and Stripes", "Alte Kaserne", "Gustav Gleis", "Drinks of the World", "FC St. Gallen"],
+        "Gebühren": ["Jahresgebühr", "SERAFE AG", "FedEx Express Swiss Post", "Migrationsamt"],
+        "DIV": ["Müller Handels AG", "Amavita Apoth", "Gitarre"],
         "DIV2": ["Adrian Gabathuler"],
-        "Lia": [],
+        "Lia": ["Walter Zoo AG Gossau"],
         "Family": ["Gutschrift Pius und/oder Loni Eberhard"]
     }
 }
