@@ -154,7 +154,7 @@ def summarize_amounts_nici(file_path, keys_to_search):
                 amounts["no_key"] += amount
 
             # Debug row processing
-            #debug_row_processing(row, description, amount, key_found, group, description if description else "No description matched")
+            debug_row_processing(row, description, amount, key_found, group, description if description else "No description matched")
 
     # Print the group totals in the order they appear in keys_to_search
     print("\nGroup Totals:")

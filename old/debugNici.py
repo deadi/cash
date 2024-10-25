@@ -46,7 +46,7 @@ def debug_no_key_lines(file_path, keys_to_search):
 
 # Example usage
 if __name__ == "__main__":
-    file_path = '/home/adi/cash/data/2023-pk-nici.csv'
+    file_path = '/home/adi/cash/data/2024-pk-nici.csv'
     config_path = '/home/adi/cash/config/nici.json'
     
     # Load JSON config
