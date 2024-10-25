@@ -6,7 +6,8 @@ from data_processing import (
     summarize_amounts_adi,
     summarize_amounts_nici,
     get_top_no_key_lines_adi,
-    get_top_no_key_lines_nici
+    get_top_no_key_lines_nici,
+    export_to_csv
 )
 
 # Print current working directory and workspace path for reference
@@ -21,23 +22,6 @@ def parse_arguments():
     parser.add_argument('--output', required=True, help="Path to the output CSV file")
     parser.add_argument('--verbose', action='store_true', help="Enable verbose output for debugging")
     return parser.parse_args()
-
-# Function to write summary results to CSV
-def export_to_csv(output_path, amounts, group_totals, keys_to_search):
-    with open(output_path, mode='w', newline='', encoding='utf-8-sig') as csvfile:
-        csv_writer = csv.writer(csvfile, delimiter=';')
-        csv_writer.writerow(['Key', 'Total Amount'])
-        for key, total in amounts.items():
-            csv_writer.writerow([key, f"{total:.2f}"])
-        
-        csv_writer.writerow([])
-        csv_writer.writerow(['Group', 'Group Total'])
-        for group in keys_to_search:
-            csv_writer.writerow([group, f"{group_totals[group]:.2f}"])
-        
-        csv_writer.writerow([])
-        csv_writer.writerow(['No Key', f"{amounts.get('no_key', 0.0):.2f}"])
-    print(f"Results have been exported to {output_path}")
 
 # Main function
 def main():

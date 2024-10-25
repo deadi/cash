@@ -217,3 +217,19 @@ def get_top_no_key_lines_nici(file_path, keys_to_search, top_n=5):
 
 ##################################################
 
+# Function to write summary results to CSV
+def export_to_csv(output_path, amounts, group_totals, keys_to_search):
+    with open(output_path, mode='w', newline='', encoding='utf-8-sig') as csvfile:
+        csv_writer = csv.writer(csvfile, delimiter=';')
+        csv_writer.writerow(['Key', 'Total Amount'])
+        for key, total in amounts.items():
+            csv_writer.writerow([key, f"{total:.2f}"])
+        
+        csv_writer.writerow([])
+        csv_writer.writerow(['Group', 'Group Total'])
+        for group in keys_to_search:
+            csv_writer.writerow([group, f"{group_totals[group]:.2f}"])
+        
+        csv_writer.writerow([])
+        csv_writer.writerow(['No Key', f"{amounts.get('no_key', 0.0):.2f}"])
+    print(f"Results have been exported to {output_path}")
