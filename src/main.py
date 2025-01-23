@@ -45,7 +45,7 @@ def main():
 
         # Summarize amounts and retrieve top 'no key' lines
         amounts, group_totals = summarize_func(csv_file_path, keys_to_search)
-        top_lines = top_lines_func(csv_file_path, keys_to_search, top_n=10)
+        top_lines = top_lines_func(csv_file_path, keys_to_search, top_n=100)
 
         # Display top lines if verbose mode is enabled
         if args.verbose:
