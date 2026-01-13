@@ -118,22 +118,31 @@ def summarize_amounts_nici(file_path, keys_to_search):
         next(csv_reader)
 
         for row in csv_reader:
-            # Extract descriptions from columns 12, 13, 14 ('Beschreibung 1-3')
-            description_1 = row[12]
-            description_2 = row[13]
-            description_3 = row[14]
+            # 2025 CSV structure indices:
+            # 0 Abschlussdatum; 1 Abschlusszeit; 2 Buchungsdatum; 3 Valutadatum; 4 Währung
+            # 5 Belastung; 6 Gutschrift; 7 Einzelbetrag; 8 Saldo; 9 Transaktions-Nr.
+            # 10 Beschreibung1; 11 Beschreibung2; 12 Beschreibung3; 13 Fussnoten
+            description_1 = row[10]
+            description_2 = row[11]
+            description_3 = row[12]
 
-            # Determine the amount: negative in row[18] or positive in row[19]
-            if row[18].strip():  # If row[18] is not empty, it's the negative amount
-                amount = -clean_amount(row[18])  # Make it negative
-            elif row[19].strip():  # If row[19] is not empty, it's the positive amount
-                amount = clean_amount(row[19])
-            elif row[17].strip():  # If both row[18] and row[19] are empty, use row[17] for "Bankfee"
-                amount = clean_amount(row[17])
-                amounts["Bankfee"] += amount  # Add to "Bankfee"
-                continue  # Skip further processing for this row
+            # Determine amount using the separated debit/credit fields.
+            # Belastung (debit) should be treated as negative, Gutschrift (credit) as positive.
+            belastung = row[5].strip()
+            gutschrift = row[6].strip()
+            einzelbetrag = row[7].strip()
+
+            if belastung:
+                amount = -clean_amount(belastung)
+            elif gutschrift:
+                amount = clean_amount(gutschrift)
+            elif einzelbetrag:
+                # Einzelbetrag is used for standalone fees; bucket it as "Bankfee".
+                amount = clean_amount(einzelbetrag)
+                amounts["Bankfee"] += amount
+                continue
             else:
-                amount = 0.0  # No valid amount found
+                amount = 0.0
 
             # Check if any of the descriptions contain the keys
             key_found = False
@@ -178,18 +187,24 @@ def get_top_no_key_lines_nici(file_path, keys_to_search, top_n=5):
         next(csv_reader)  # Skip the header row
 
         for row in csv_reader:
-            # Extract descriptions from columns 12, 13, 14 ('Beschreibung 1-3')
-            description_1 = row[12]
-            description_2 = row[13]
-            description_3 = row[14]
+            # 2025 CSV structure indices for the descriptions.
+            description_1 = row[10]
+            description_2 = row[11]
+            description_3 = row[12]
 
             amount = 0.0
 
-            # Determine the amount: negative in row[18] or positive in row[19]
-            if row[18].strip():  # If Belastung is not empty, it's the negative amount
-                amount = -clean_amount(row[18])  # Make it negative
-            elif row[19].strip():  # If Gutschrift is not empty, use it as the positive amount
-                amount = clean_amount(row[19])
+            # Use separated debit/credit fields for the amount.
+            belastung = row[5].strip()
+            gutschrift = row[6].strip()
+            einzelbetrag = row[7].strip()
+
+            if belastung:
+                amount = -clean_amount(belastung)
+            elif gutschrift:
+                amount = clean_amount(gutschrift)
+            elif einzelbetrag:
+                amount = clean_amount(einzelbetrag)
 
             # Check if any of the three descriptions contain any of the keywords
             key_found = False
