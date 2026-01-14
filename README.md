@@ -29,7 +29,7 @@ python src/main.py --config config/adi.json --output out.csv --list-groups
 
 Print the terms for a single group key (example: Entertainment):
 ```
-python src/main.py --config config/adi.json--output out.csv --print-group "Entertainment"
+python src/main.py --config config/adi.json --output out.csv --print-group "Entertainment"
 ```
 
 To query rows that contain a key directly (Adi matches `Text`, Nici matches `Beschreibung1/2`):
