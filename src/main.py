@@ -5,6 +5,8 @@ from config_loader import load_config
 from data_processing import (
     summarize_amounts_adi,
     summarize_amounts_nici,
+    get_lines_for_key_adi,
+    get_lines_for_key_nici,
     get_top_no_key_lines_adi,
     get_top_no_key_lines_nici,
     export_to_csv
@@ -20,6 +22,10 @@ def parse_arguments():
     parser = argparse.ArgumentParser(description="Process CSV files based on JSON config and output to specified path.")
     parser.add_argument('--config', required=True, help="Path to the JSON config file (e.g., adi.json or nici.json)")
     parser.add_argument('--output', required=True, help="Path to the output CSV file")
+    parser.add_argument('--list-groups', action='store_true', help="Print the group keys from the config and exit")
+    parser.add_argument('--print-group', help="Print the terms for a specific group key and exit")
+    parser.add_argument('--find-key', help="Search for a key and print matching CSV rows before summarizing")
+    parser.add_argument('--find-limit', type=int, default=50, help="Limit for printed rows when using --find-key")
     parser.add_argument('--verbose', action='store_true', help="Enable verbose output for debugging")
     return parser.parse_args()
 
@@ -33,16 +39,40 @@ def main():
         keys_to_search = config_data["keys_to_search"]
         output_csv_path = args.output
 
+        # Exit early if the user only wants to inspect group keys or group contents.
+        if args.list_groups:
+            for group_key in keys_to_search.keys():
+                print(group_key)
+            return
+
+        if args.print_group:
+            group_terms = keys_to_search.get(args.print_group)
+            if not group_terms:
+                print(f"Group '{args.print_group}' not found in config.")
+            else:
+                print(f"{args.print_group}:")
+                for term in group_terms:
+                    print(f"- {term}")
+            return
+
         # Map config to specific functions
         # Normalize config filename to detect adi/nici configs regardless of case.
         config_type = 'adi' if 'adi.json' in args.config.lower() else 'nici'
         func_map = {
-            'adi': (summarize_amounts_adi, get_top_no_key_lines_adi),
-            'nici': (summarize_amounts_nici, get_top_no_key_lines_nici)
+            'adi': (summarize_amounts_adi, get_top_no_key_lines_adi, get_lines_for_key_adi),
+            'nici': (summarize_amounts_nici, get_top_no_key_lines_nici, get_lines_for_key_nici)
         }
 
-        summarize_func, top_lines_func = func_map[config_type]
+        summarize_func, top_lines_func, find_lines_func = func_map[config_type]
         print(f"Processing {csv_file_path} with {args.config} (using {config_type.capitalize()} functions)")
+
+        # Optional direct lookup: print rows that match a provided key before summarizing.
+        if args.find_key:
+            matching_rows = find_lines_func(csv_file_path, args.find_key)
+            limited_rows = matching_rows[:args.find_limit]
+            print(f"Found {len(matching_rows)} rows for key '{args.find_key}'. Showing {len(limited_rows)}:")
+            for row in limited_rows:
+                print(row)
 
         # Summarize amounts and retrieve top 'no key' lines
         amounts, group_totals = summarize_func(csv_file_path, keys_to_search)
