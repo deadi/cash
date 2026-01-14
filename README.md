@@ -10,8 +10,8 @@ Search terms from JSON configs are matched case-insensitively in CSV description
 
 
 ## Source summary
-- `src/main.py`: CLI entry point that loads config files, dispatches to Nici/Adi processors, prints verbose output, supports key lookups, and exports results.
-- `src/data_processing.py`: Core CSV parsing, grouping, and export logic for both Nici and Adi, including case-insensitive keyword matching, no-key reporting helpers, and key-based row lookups.
+- `src/main.py`: CLI entry point that loads config files, dispatches to Nici/Adi processors, prints verbose output, supports key/group lookups, and exports results.
+- `src/data_processing.py`: Core CSV parsing, grouping, and export logic for both Nici and Adi, including case-insensitive keyword matching, no-key reporting helpers, and key/group-based row lookups.
 - `src/config_loader.py`: Loads and validates JSON configuration files containing CSV paths and keys to search.
 - `src/utils.py`: Utility helper for cleaning amount strings into floats.
 - `src/debug.py`: Debug helper for printing row processing details.
@@ -19,7 +19,7 @@ Search terms from JSON configs are matched case-insensitively in CSV description
 
 ## Usage
 ```
-python src/main.py --config config/adi.json--output out.csv
+python src/main.py --config config/adi.json --output out.csv
 ```
 
 List group keys from a config file:
@@ -34,12 +34,18 @@ python src/main.py --config config/adi.json --output out.csv --print-group "Ente
 
 To query rows that contain a key directly (Adi matches `Text`, Nici matches `Beschreibung1/2`):
 ```
-python src/main.py --config config/adi.json--output out.csv --find-key "rent" --find-limit 20
+python src/main.py --config config/adi.json --output out.csv --find-key "rent" --find-limit 20
+```
+
+To query rows that match any term in a config group (Adi matches `Text`, Nici matches `Beschreibung1/2`):
+```
+python src/main.py --config config/adi.json --output out.csv --find-group "Entertainment"
 ```
 
 ## Project structure
 ```
 .
+├── .gitignore
 ├── AGENTS.md
 ├── README.md
 ├── requirements.txt
