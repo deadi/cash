@@ -1,6 +1,5 @@
 import csv
 from debug import debug_row_processing
-from utils import clean_amount
 
 ##################################################
 
@@ -124,21 +123,20 @@ def summarize_amounts_nici(file_path, keys_to_search):
             # 10 Beschreibung1; 11 Beschreibung2; 12 Beschreibung3; 13 Fussnoten
             description_1 = row[10]
             description_2 = row[11]
-            description_3 = row[12]
 
             # Determine amount using the separated debit/credit fields.
-            # Belastung (debit) should be treated as negative, Gutschrift (credit) as positive.
+            # Belastung (debit) values are already negative in the CSV.
             belastung = row[5].strip()
             gutschrift = row[6].strip()
             einzelbetrag = row[7].strip()
 
             if belastung:
-                amount = -clean_amount(belastung)
+                amount = float(belastung)
             elif gutschrift:
-                amount = clean_amount(gutschrift)
+                amount = float(gutschrift)
             elif einzelbetrag:
                 # Einzelbetrag is used for standalone fees; bucket it as "Bankfee".
-                amount = clean_amount(einzelbetrag)
+                amount = float(einzelbetrag)
                 amounts["Bankfee"] += amount
                 continue
             else:
@@ -149,7 +147,7 @@ def summarize_amounts_nici(file_path, keys_to_search):
             description = None  # Keep track of which description matched the key
             for group, descriptions in keys_to_search.items():
                 for desc in descriptions:
-                    if desc in description_1 or desc in description_2 or desc in description_3:
+                    if desc in description_1 or desc in description_2:
                         amounts[desc] += amount
                         group_totals[group] += amount
                         key_found = True
@@ -190,7 +188,6 @@ def get_top_no_key_lines_nici(file_path, keys_to_search, top_n=5):
             # 2025 CSV structure indices for the descriptions.
             description_1 = row[10]
             description_2 = row[11]
-            description_3 = row[12]
 
             amount = 0.0
 
@@ -200,17 +197,17 @@ def get_top_no_key_lines_nici(file_path, keys_to_search, top_n=5):
             einzelbetrag = row[7].strip()
 
             if belastung:
-                amount = -clean_amount(belastung)
+                amount = float(belastung)
             elif gutschrift:
-                amount = clean_amount(gutschrift)
+                amount = float(gutschrift)
             elif einzelbetrag:
-                amount = clean_amount(einzelbetrag)
+                amount = float(einzelbetrag)
 
             # Check if any of the three descriptions contain any of the keywords
             key_found = False
             for keywords in keys_to_search.values():
                 for keyword in keywords:
-                    if keyword in description_1 or keyword in description_2 or keyword in description_3:
+                    if keyword in description_1 or keyword in description_2:
                         key_found = True
                         break
                 if key_found:
@@ -218,7 +215,7 @@ def get_top_no_key_lines_nici(file_path, keys_to_search, top_n=5):
 
             # If no key was found, add this row to the no_key_lines
             if not key_found:
-                no_key_lines.append((f"{description_1} {description_2} {description_3}", amount, row))
+                no_key_lines.append((f"{description_1} {description_2}", amount, row))
 
     # Sort by amount in descending order and get the top_n
     top_lines = sorted(no_key_lines, key=lambda x: x[1], reverse=True)[:top_n]
