@@ -1,6 +1,13 @@
 # cash
 Python app für Nici und Adi: Bankdaten als CSV werden analysiert und in Gruppen geteilt.
 
+1. Csv Structure for Nici:
+`Abschlussdatum;Abschlusszeit;Buchungsdatum;Valutadatum;Währung;Belastung;Gutschrift;Einzelbetrag;Saldo;Transaktions-Nr.;Beschreibung1;Beschreibung2;Beschreibung3;Fussnoten;`
+
+2. Csv Structure for Adi
+`IBAN;Booked At;Text;Credit/Debit Amount;Balance;Valuta Date`
+
+
 ## Source summary
 - `src/main.py`: CLI entry point that loads config files, dispatches to Nici/Adi processors, prints verbose output, and exports results.
 - `src/data_processing.py`: Core CSV parsing, grouping, and export logic for both Nici and Adi, including no-key reporting helpers.
