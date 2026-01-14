@@ -1,6 +1,14 @@
 import csv
 from debug import debug_row_processing
 
+
+def normalize_keys_to_search(keys_to_search):
+    # Normalize search terms once so CSV matching can be case-insensitive.
+    return {
+        group: [(desc, desc.lower()) for desc in descriptions]
+        for group, descriptions in keys_to_search.items()
+    }
+
 ##################################################
 
 # Adi functions
@@ -13,6 +21,7 @@ from debug import debug_row_processing
 def summarize_amounts_adi(file_path, keys_to_search):
     amounts = {}
     group_totals = {}
+    normalized_keys = normalize_keys_to_search(keys_to_search)
     
     # Initialize amounts for each key and group
     for group, descriptions in keys_to_search.items():
@@ -31,13 +40,14 @@ def summarize_amounts_adi(file_path, keys_to_search):
         for row in csv_reader:
             # Extract the description and amount
             description = row[2]
+            description_lower = description.lower()
             amount = float(row[3])
 
             # Check if the description contains any of the keys
             key_found = False
-            for group, descriptions in keys_to_search.items():
-                for desc in descriptions:
-                    if desc in description:
+            for group, descriptions in normalized_keys.items():
+                for desc, desc_lower in descriptions:
+                    if desc_lower in description_lower:
                         amounts[desc] += amount
                         group_totals[group] += amount
                         key_found = True
@@ -69,6 +79,11 @@ def summarize_amounts_adi(file_path, keys_to_search):
 # No Key Lines
 def get_top_no_key_lines_adi(file_path, keys_to_search, top_n=5):
     no_key_lines = []
+    normalized_keywords = [
+        desc.lower()
+        for descriptions in keys_to_search.values()
+        for desc in descriptions
+    ]
 
     # Open the file using a forgiving encoding (ISO-8859-1)
     with open(file_path, mode='r', encoding='ISO-8859-1') as file:
@@ -78,10 +93,11 @@ def get_top_no_key_lines_adi(file_path, keys_to_search, top_n=5):
 
         for row in csv_reader:
             description = row[2]
+            description_lower = description.lower()
             amount = float(row[3])
 
             # Check if the description contains any of the keywords
-            if not any(keyword in description for keywords in keys_to_search.values() for keyword in keywords):
+            if not any(keyword in description_lower for keyword in normalized_keywords):
                 no_key_lines.append((description, amount, row))
 
     # Sort by amount in descending order and get the top_n
@@ -100,6 +116,7 @@ def get_top_no_key_lines_adi(file_path, keys_to_search, top_n=5):
 def summarize_amounts_nici(file_path, keys_to_search):
     amounts = {}
     group_totals = {}
+    normalized_keys = normalize_keys_to_search(keys_to_search)
 
     # Initialize amounts for each key and group
     for group, descriptions in keys_to_search.items():
@@ -123,6 +140,8 @@ def summarize_amounts_nici(file_path, keys_to_search):
             # 10 Beschreibung1; 11 Beschreibung2; 12 Beschreibung3; 13 Fussnoten
             description_1 = row[10]
             description_2 = row[11]
+            description_1_lower = description_1.lower()
+            description_2_lower = description_2.lower()
 
             # Determine amount using the separated debit/credit fields.
             # Belastung (debit) values are already negative in the CSV.
@@ -145,9 +164,9 @@ def summarize_amounts_nici(file_path, keys_to_search):
             # Check if any of the descriptions contain the keys
             key_found = False
             description = None  # Keep track of which description matched the key
-            for group, descriptions in keys_to_search.items():
-                for desc in descriptions:
-                    if desc in description_1 or desc in description_2:
+            for group, descriptions in normalized_keys.items():
+                for desc, desc_lower in descriptions:
+                    if desc_lower in description_1_lower or desc_lower in description_2_lower:
                         amounts[desc] += amount
                         group_totals[group] += amount
                         key_found = True
@@ -177,6 +196,11 @@ def summarize_amounts_nici(file_path, keys_to_search):
 
 def get_top_no_key_lines_nici(file_path, keys_to_search, top_n=5):
     no_key_lines = []
+    normalized_keywords = [
+        desc.lower()
+        for descriptions in keys_to_search.values()
+        for desc in descriptions
+    ]
 
     # Open the file using the correct encoding (UTF-8 or ISO-8859-1)
     with open(file_path, mode='r', encoding='utf-8') as file:
@@ -188,6 +212,8 @@ def get_top_no_key_lines_nici(file_path, keys_to_search, top_n=5):
             # 2025 CSV structure indices for the descriptions.
             description_1 = row[10]
             description_2 = row[11]
+            description_1_lower = description_1.lower()
+            description_2_lower = description_2.lower()
 
             amount = 0.0
 
@@ -204,14 +230,11 @@ def get_top_no_key_lines_nici(file_path, keys_to_search, top_n=5):
                 amount = float(einzelbetrag)
 
             # Check if any of the three descriptions contain any of the keywords
-            key_found = False
-            for keywords in keys_to_search.values():
-                for keyword in keywords:
-                    if keyword in description_1 or keyword in description_2:
-                        key_found = True
-                        break
-                if key_found:
-                    break
+            # Use normalized keywords to keep matching case-insensitive.
+            key_found = any(
+                keyword in description_1_lower or keyword in description_2_lower
+                for keyword in normalized_keywords
+            )
 
             # If no key was found, add this row to the no_key_lines
             if not key_found:
