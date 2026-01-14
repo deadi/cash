@@ -9,6 +9,12 @@ def normalize_keys_to_search(keys_to_search):
         for group, descriptions in keys_to_search.items()
     }
 
+
+def _normalize_group_terms(keys_to_search, group):
+    # Build a normalized list of terms for a specific group key.
+    group_terms = keys_to_search.get(group, [])
+    return [(term, term.lower()) for term in group_terms]
+
 ##################################################
 
 # Adi functions
@@ -29,6 +35,25 @@ def get_lines_for_key_adi(file_path, key):
         for row in csv_reader:
             description_lower = row[2].lower()
             if key_lower in description_lower:
+                matching_rows.append(row)
+
+    return matching_rows
+
+
+def get_lines_for_group_adi(file_path, group, keys_to_search):
+    # Expand the provided group into its search terms, then match any of them.
+    matching_rows = []
+    normalized_group_terms = _normalize_group_terms(keys_to_search, group)
+
+    # The Adi CSV uses a semicolon delimiter and ISO-8859-1 encoding.
+    with open(file_path, mode='r', encoding='ISO-8859-1') as file:
+        csv_reader = csv.reader(file, delimiter=';')
+
+        next(csv_reader)  # Skip header row to align with data rows.
+
+        for row in csv_reader:
+            description_lower = row[2].lower()
+            if any(term_lower in description_lower for _, term_lower in normalized_group_terms):
                 matching_rows.append(row)
 
     return matching_rows
@@ -145,6 +170,29 @@ def get_lines_for_key_nici(file_path, key):
             description_1_lower = row[10].lower()
             description_2_lower = row[11].lower()
             if key_lower in description_1_lower or key_lower in description_2_lower:
+                matching_rows.append(row)
+
+    return matching_rows
+
+
+def get_lines_for_group_nici(file_path, group, keys_to_search):
+    # Expand the group key into its terms and match any term in Beschreibung1/2.
+    matching_rows = []
+    normalized_group_terms = _normalize_group_terms(keys_to_search, group)
+
+    # The Nici CSV uses a semicolon delimiter and UTF-8 encoding.
+    with open(file_path, mode='r', encoding='utf-8') as file:
+        csv_reader = csv.reader(file, delimiter=';')
+
+        next(csv_reader)  # Skip header row to align with data rows.
+
+        for row in csv_reader:
+            description_1_lower = row[10].lower()
+            description_2_lower = row[11].lower()
+            if any(
+                term_lower in description_1_lower or term_lower in description_2_lower
+                for _, term_lower in normalized_group_terms
+            ):
                 matching_rows.append(row)
 
     return matching_rows
