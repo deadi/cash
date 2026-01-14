@@ -5,15 +5,25 @@ from debug import debug_row_processing
 def normalize_keys_to_search(keys_to_search):
     # Normalize search terms once so CSV matching can be case-insensitive.
     return {
-        group: [(desc, desc.lower()) for desc in descriptions]
-        for group, descriptions in keys_to_search.items()
+        group: normalize_group_terms(keys_to_search, group)
+        for group in keys_to_search.keys()
     }
 
 
-def _normalize_group_terms(keys_to_search, group):
+def normalize_group_terms(keys_to_search, group):
     # Build a normalized list of terms for a specific group key.
     group_terms = keys_to_search.get(group, [])
     return [(term, term.lower()) for term in group_terms]
+
+
+def row_matches_any_term(term_pairs, *descriptions):
+    # Reusable matcher so group/key lookups and summaries share the same logic.
+    description_lowers = [description.lower() for description in descriptions]
+    return any(
+        term_lower in description_lower
+        for _, term_lower in term_pairs
+        for description_lower in description_lowers
+    )
 
 ##################################################
 
@@ -43,7 +53,7 @@ def get_lines_for_key_adi(file_path, key):
 def get_lines_for_group_adi(file_path, group, keys_to_search):
     # Expand the provided group into its search terms, then match any of them.
     matching_rows = []
-    normalized_group_terms = _normalize_group_terms(keys_to_search, group)
+    normalized_group_terms = normalize_group_terms(keys_to_search, group)
 
     # The Adi CSV uses a semicolon delimiter and ISO-8859-1 encoding.
     with open(file_path, mode='r', encoding='ISO-8859-1') as file:
@@ -52,8 +62,8 @@ def get_lines_for_group_adi(file_path, group, keys_to_search):
         next(csv_reader)  # Skip header row to align with data rows.
 
         for row in csv_reader:
-            description_lower = row[2].lower()
-            if any(term_lower in description_lower for _, term_lower in normalized_group_terms):
+            description = row[2]
+            if row_matches_any_term(normalized_group_terms, description):
                 matching_rows.append(row)
 
     return matching_rows
@@ -178,7 +188,7 @@ def get_lines_for_key_nici(file_path, key):
 def get_lines_for_group_nici(file_path, group, keys_to_search):
     # Expand the group key into its terms and match any term in Beschreibung1/2.
     matching_rows = []
-    normalized_group_terms = _normalize_group_terms(keys_to_search, group)
+    normalized_group_terms = normalize_group_terms(keys_to_search, group)
 
     # The Nici CSV uses a semicolon delimiter and UTF-8 encoding.
     with open(file_path, mode='r', encoding='utf-8') as file:
@@ -187,12 +197,9 @@ def get_lines_for_group_nici(file_path, group, keys_to_search):
         next(csv_reader)  # Skip header row to align with data rows.
 
         for row in csv_reader:
-            description_1_lower = row[10].lower()
-            description_2_lower = row[11].lower()
-            if any(
-                term_lower in description_1_lower or term_lower in description_2_lower
-                for _, term_lower in normalized_group_terms
-            ):
+            description_1 = row[10]
+            description_2 = row[11]
+            if row_matches_any_term(normalized_group_terms, description_1, description_2):
                 matching_rows.append(row)
 
     return matching_rows
