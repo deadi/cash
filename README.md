@@ -19,22 +19,22 @@ Search terms from JSON configs are matched case-insensitively in CSV description
 
 ## Usage
 ```
-python src/main.py --config path/to/adi.json --output out.csv
+python src/main.py --config config/adi.json--output out.csv
 ```
 
 List group keys from a config file:
 ```
-python src/main.py --config path/to/adi.json --output out.csv --list-groups
+python src/main.py --config config/adi.json --output out.csv --list-groups
 ```
 
 Print the terms for a single group key (example: Entertainment):
 ```
-python src/main.py --config path/to/adi.json --output out.csv --print-group "Entertainment"
+python src/main.py --config config/adi.json--output out.csv --print-group "Entertainment"
 ```
 
 To query rows that contain a key directly (Adi matches `Text`, Nici matches `Beschreibung1/2`):
 ```
-python src/main.py --config path/to/adi.json --output out.csv --find-key "rent" --find-limit 20
+python src/main.py --config config/adi.json--output out.csv --find-key "rent" --find-limit 20
 ```
 
 ## Project structure
