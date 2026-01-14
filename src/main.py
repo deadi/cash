@@ -34,7 +34,8 @@ def main():
         output_csv_path = args.output
 
         # Map config to specific functions
-        config_type = 'adi' if 'adi.json' in args.config else 'nici'
+        # Normalize config filename to detect adi/nici configs regardless of case.
+        config_type = 'adi' if 'adi.json' in args.config.lower() else 'nici'
         func_map = {
             'adi': (summarize_amounts_adi, get_top_no_key_lines_adi),
             'nici': (summarize_amounts_nici, get_top_no_key_lines_nici)
