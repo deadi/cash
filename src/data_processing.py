@@ -15,6 +15,23 @@ def normalize_keys_to_search(keys_to_search):
 
 ##################################################
 
+# Return rows whose description contains the provided key (case-insensitive).
+def get_lines_for_key_adi(file_path, key):
+    matching_rows = []
+    key_lower = key.lower()
+
+    # The Adi CSV uses a semicolon delimiter and ISO-8859-1 encoding.
+    with open(file_path, mode='r', encoding='ISO-8859-1') as file:
+        csv_reader = csv.reader(file, delimiter=';')
+
+        next(csv_reader)  # Skip header row to align with data rows.
+
+        for row in csv_reader:
+            description_lower = row[2].lower()
+            if key_lower in description_lower:
+                matching_rows.append(row)
+
+    return matching_rows
 
 
 # Function to parse and summarize the amounts
@@ -112,6 +129,25 @@ def get_top_no_key_lines_adi(file_path, keys_to_search, top_n=5):
 # Nici functions
 
 ##################################################
+
+# Return rows whose description1 or description2 contains the key (case-insensitive).
+def get_lines_for_key_nici(file_path, key):
+    matching_rows = []
+    key_lower = key.lower()
+
+    # The Nici CSV uses a semicolon delimiter and UTF-8 encoding.
+    with open(file_path, mode='r', encoding='utf-8') as file:
+        csv_reader = csv.reader(file, delimiter=';')
+
+        next(csv_reader)  # Skip header row to align with data rows.
+
+        for row in csv_reader:
+            description_1_lower = row[10].lower()
+            description_2_lower = row[11].lower()
+            if key_lower in description_1_lower or key_lower in description_2_lower:
+                matching_rows.append(row)
+
+    return matching_rows
 
 def summarize_amounts_nici(file_path, keys_to_search):
     amounts = {}
