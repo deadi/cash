@@ -1,3 +1,4 @@
-1. review code
-2. update README and Project structure
-3. make code explanations in comments
+- review code
+- update README and Project structure
+- make code explanations in comments
+- improve reusability and modularity of code
