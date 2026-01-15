@@ -12,3 +12,4 @@ __pycache__/
 # Ignore mypy and pytype cache
 .mypy_cache/
 .pytype/
+.csv
