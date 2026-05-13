@@ -1,6 +1,5 @@
 # cash
-Python app für Nici und Adi: Bankdaten als CSV werden analysiert und in Gruppen geteilt.
-Search terms from JSON configs are matched case-insensitively in CSV descriptions.
+currently 2 JSON configurations for grouping keys and data_processing python functions.
 
 1. Csv Structure for Nici:
 `Abschlussdatum;Abschlusszeit;Buchungsdatum;Valutadatum;Währung;Belastung;Gutschrift;Einzelbetrag;Saldo;Transaktions-Nr.;Beschreibung1;Beschreibung2;Beschreibung3;Fussnoten;`
